@@ -26,7 +26,7 @@ const processGithubOauth = function(req, res) {
   axios(generateAccessTokenConfig(code)).then(({data}) => {
     const accessToken = data['access_token'];
     axios(generateUserInfoConfig(accessToken)).then(({data}) => {
-      const {name, avatar_url, id} = data;
+      req.app.locals.userDetails = data;
       res.cookie('sId', sessions.createSession(data.id));
       res.redirect('http://localhost:3000/');
     });

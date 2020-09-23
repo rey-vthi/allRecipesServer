@@ -2,13 +2,10 @@ const fs = require('fs');
 const express = require('express');
 const fileUpload = require('express-fileupload');
 const cookieParser = require('cookie-parser');
-const {Sessions} = require('./models/sessions');
 const {processGithubOauth} = require('./handlers');
-const allRecipes = [];
+const {restoreRecipes} = require('./userHandlers');
 
 const app = express();
-
-app.locals.sessions = new Sessions();
 
 app.use((req, res, next) => {
   console.log(req.url);
@@ -31,37 +28,44 @@ app.get('/api/isLoggedIn', (req, res) => {
   else res.json({status: false});
 });
 
+app.use(restoreRecipes);
+
 app.get('/api/getAllRecipes', (req, res) => {
-  res.json(allRecipes);
+  res.json(req.app.locals.recipes);
 });
 
 app.get('/api/getAllSalads', (req, res) => {
-  const recipes = allRecipes.filter(r => r.category === 'salad');
-  res.json(recipes);
+  const {recipes} = req.app.locals;
+  const filteredRecipes = recipes.filter(r => r.category === 'salad');
+  res.json(filteredRecipes);
 });
 
 app.get('/api/getAllJuice', (req, res) => {
-  const recipes = allRecipes.filter(r => r.category === 'juice');
-  res.json(recipes);
+  const {recipes} = req.app.locals;
+  const filteredRecipes = recipes.filter(r => r.category === 'juice');
+  res.json(filteredRecipes);
 });
 
 app.get('/api/getAllBreakfast', (req, res) => {
-  const recipes = allRecipes.filter(r => r.category === 'breakfast');
-  console.log(recipes);
-  res.json(recipes);
+  const {recipes} = req.app.locals;
+  const filteredRecipes = recipes.filter(r => r.category === 'breakfast');
+  res.json(filteredRecipes);
 });
 
 app.get('/api/getAllLunch', (req, res) => {
-  const recipes = allRecipes.filter(r => r.category === 'lunch');
-  res.json(recipes);
+  const {recipes} = req.app.locals;
+  const filteredRecipes = recipes.filter(r => r.category === 'lunch');
+  res.json(filteredRecipes);
 });
 
 app.post('/api/addNewRecipe', (req, res) => {
   const {file} = req.files;
+  const {recipes, db, userDetails} = req.app.locals;
+  const by = userDetails.name;
   fs.writeFileSync(`./public/assets/${file.md5}.jpg`, file.data, 'utf8');
-  allRecipes.push(
-    Object.assign(req.body, {by: 'revathi', path: `/assets/${file.md5}.jpg`})
-  );
+  const recipe = {...req.body, by, path: `/assets/${file.md5}.jpg`};
+  recipes.push(recipe);
+  db.setRecipes(recipes);
   res.end();
 });
 
