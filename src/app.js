@@ -3,7 +3,13 @@ const express = require('express');
 const fileUpload = require('express-fileupload');
 const cookieParser = require('cookie-parser');
 const {processGithubOauth} = require('./handlers');
-const {restoreRecipes} = require('./userHandlers');
+const {
+  restoreRecipes,
+  filterSalads,
+  filterJuice,
+  filterBreakfast,
+  filterLunch
+} = require('./userHandlers');
 
 const app = express();
 
@@ -34,38 +40,49 @@ app.get('/api/getAllRecipes', (req, res) => {
   res.json(req.app.locals.recipes);
 });
 
-app.get('/api/getAllSalads', (req, res) => {
-  const {recipes} = req.app.locals;
-  const filteredRecipes = recipes.filter(r => r.category === 'salad');
-  res.json(filteredRecipes);
-});
+app.get('/api/getAllSalads', filterSalads);
 
-app.get('/api/getAllJuice', (req, res) => {
-  const {recipes} = req.app.locals;
-  const filteredRecipes = recipes.filter(r => r.category === 'juice');
-  res.json(filteredRecipes);
-});
+app.get('/api/getAllJuice', filterJuice);
 
-app.get('/api/getAllBreakfast', (req, res) => {
-  const {recipes} = req.app.locals;
-  const filteredRecipes = recipes.filter(r => r.category === 'breakfast');
-  res.json(filteredRecipes);
-});
+app.get('/api/getAllBreakfast', filterBreakfast);
 
-app.get('/api/getAllLunch', (req, res) => {
-  const {recipes} = req.app.locals;
-  const filteredRecipes = recipes.filter(r => r.category === 'lunch');
-  res.json(filteredRecipes);
-});
+app.get('/api/getAllLunch', filterLunch);
 
 app.post('/api/addNewRecipe', (req, res) => {
   const {file} = req.files;
   const {recipes, db, userDetails} = req.app.locals;
-  const by = userDetails.name;
+  const {name, id} = userDetails;
   fs.writeFileSync(`./public/assets/${file.md5}.jpg`, file.data, 'utf8');
-  const recipe = {...req.body, by, path: `/assets/${file.md5}.jpg`};
+  const recipe = {...req.body, by: name, id, path: `/assets/${file.md5}.jpg`};
   recipes.push(recipe);
   db.setRecipes(recipes);
+  res.end();
+});
+
+app.get('/api/profile', (req, res) => {
+  const {db, userDetails} = req.app.locals;
+  db.getUser(userDetails.id).then(info => {
+    res.json(JSON.parse(info));
+  });
+});
+
+app.get('/api/others', (req, res) => {
+  const {db, userDetails} = req.app.locals;
+  db.getAllUsers().then(users => {
+    const allUsers = Object.keys(users);
+    const others = allUsers.filter(id => userDetails.id !== +id);
+    const result = others.map(user => {
+      const {followers, name, url, id} = JSON.parse(users[user]);
+      if (followers.includes(userDetails.id)) {
+        return {name, url, id, followingStatus: true};
+      }
+      return {name, url, id, followingStatus: false};
+    });
+    res.json(result);
+  });
+});
+
+app.post('/api/toggleFollowStatus', (req, res) => {
   res.end();
 });
 

@@ -21,14 +21,17 @@ const generateAccessTokenConfig = function(code) {
 };
 
 const processGithubOauth = function(req, res) {
-  const {sessions} = req.app.locals;
+  const {sessions, db} = req.app.locals;
   const {code} = req.query;
   axios(generateAccessTokenConfig(code)).then(({data}) => {
     const accessToken = data['access_token'];
     axios(generateUserInfoConfig(accessToken)).then(({data}) => {
       req.app.locals.userDetails = data;
+      const {name, avatar_url, id} = data;
       res.cookie('sId', sessions.createSession(data.id));
-      res.redirect('http://localhost:3000/');
+      db.addUser({name, url: avatar_url, id}).then(
+        res.redirect('http://localhost:3000')
+      );
     });
   });
 };

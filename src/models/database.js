@@ -24,6 +24,40 @@ class Database {
       });
     });
   }
+
+  addUser(details) {
+    const info = Object.assign(details, {followers: '[]', following: '[]'});
+    return new Promise((resolve, reject) => {
+      this.db.hset('users', details.id, JSON.stringify(info), err => {
+        if (err) {
+          return reject(err);
+        }
+        return resolve(true);
+      });
+    });
+  }
+
+  getAllUsers() {
+    return new Promise((resolve, reject) => {
+      this.db.hgetall('users', (err, res) => {
+        if (err) {
+          return reject(err);
+        }
+        return resolve(res);
+      });
+    });
+  }
+
+  getUser(id) {
+    return new Promise((resolve, reject) => {
+      this.db.hget('users', id, (err, res) => {
+        if (err) {
+          return reject(err);
+        }
+        return resolve(res);
+      });
+    });
+  }
 }
 
 module.exports = {Database};
