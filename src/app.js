@@ -2,13 +2,14 @@ const fs = require('fs');
 const express = require('express');
 const fileUpload = require('express-fileupload');
 const cookieParser = require('cookie-parser');
-const {processGithubOauth} = require('./handlers');
+const {processGithubOauth, githubLogin} = require('./handlers');
 const {
   restoreRecipes,
   filterSalads,
   filterJuice,
   filterBreakfast,
-  filterLunch
+  filterLunch,
+  getNewRecipe  
 } = require('./userHandlers');
 
 const app = express();
@@ -23,6 +24,8 @@ app.use(fileUpload());
 app.use(express.json());
 
 app.use('/api/assets', express.static('public/assets'));
+
+app.get('/api/signIn', githubLogin);
 
 app.get('/api/verify', processGithubOauth);
 
@@ -40,6 +43,13 @@ app.get('/api/getAllRecipes', (req, res) => {
   res.json(req.app.locals.recipes);
 });
 
+app.get('/api/getRecipe/:id', (req, res) => {
+  const {id} = req.params;
+  const {recipes} = req.app.locals;
+  const recipe = recipes.filter(r => r.recipeId === +id);
+  res.json(recipe);
+});
+
 app.get('/api/getAllSalads', filterSalads);
 
 app.get('/api/getAllJuice', filterJuice);
@@ -53,7 +63,7 @@ app.post('/api/addNewRecipe', (req, res) => {
   const {recipes, db, userDetails} = req.app.locals;
   const {name, id} = userDetails;
   fs.writeFileSync(`./public/assets/${file.md5}.jpg`, file.data, 'utf8');
-  const recipe = {...req.body, by: name, id, path: `/assets/${file.md5}.jpg`};
+  const recipe = getNewRecipe(req.body, id, name, file.md5);
   recipes.push(recipe);
   db.setRecipes(recipes);
   res.end();

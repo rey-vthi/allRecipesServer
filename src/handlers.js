@@ -36,4 +36,10 @@ const processGithubOauth = function(req, res) {
   });
 };
 
-module.exports = {processGithubOauth};
+const githubLogin = (req, res) => {
+  res.redirect(
+    `https://github.com/login/oauth/authorize?client_id=1d0dd614acec505180d7`
+  );
+};
+
+module.exports = {processGithubOauth, githubLogin};

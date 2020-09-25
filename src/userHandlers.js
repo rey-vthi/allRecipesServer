@@ -31,10 +31,30 @@ const filterLunch = function(req, res) {
   res.json(filteredRecipes);
 };
 
+const getNewRecipe = (details, id, by, file) => {
+  const today = new Date();
+  const recipeId = today.getHours() + today.getSeconds();
+  const {name, category, description, steps, ingredients} = details;
+  const allSteps = steps.split(',');
+  const allIngredients = ingredients.split(',');
+  return {
+    name,
+    category,
+    steps: allSteps,
+    ingredients: allIngredients,
+    description,
+    recipeId,
+    id,
+    by,
+    path: `/assets/${file}.jpg`
+  };
+};
+
 module.exports = {
   restoreRecipes,
   filterSalads,
   filterJuice,
   filterLunch,
-  filterBreakfast
+  filterBreakfast,
+  getNewRecipe
 };
