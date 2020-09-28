@@ -9,7 +9,7 @@ const {
   filterJuice,
   filterBreakfast,
   filterLunch,
-  getNewRecipe  
+  getNewRecipe
 } = require('./userHandlers');
 
 const app = express();
