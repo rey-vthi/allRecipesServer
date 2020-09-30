@@ -31,6 +31,10 @@ const filterLunch = function(req, res) {
   res.json(filteredRecipes);
 };
 
+const isLoggedIn = function (req, res) {
+  
+}
+
 const getNewRecipe = (details, id, by, file) => {
   const today = new Date();
   const recipeId = today.getHours() + today.getSeconds();

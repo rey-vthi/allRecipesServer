@@ -24,7 +24,7 @@ app.use(fileUpload());
 app.use(express.json());
 
 app.use(express.static('./build'));
-
+  
 app.use('/api/assets', express.static('public/assets'));
 
 app.get('/api/signIn', githubLogin);
