@@ -35,10 +35,4 @@ const processGithubOauth = function(req, res) {
   });
 };
 
-const githubLogin = (req, res) => {
-  res.redirect(
-    `https://github.com/login/oauth/authorize?client_id=${getClientId()}`
-  );
-};
-
-module.exports = {processGithubOauth, githubLogin};
+module.exports = {processGithubOauth};
