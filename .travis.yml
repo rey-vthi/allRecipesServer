@@ -5,7 +5,7 @@ jobs:
     - stage: DEPLOY
       script: './createBuild.sh'
       deploy:
-        app: art-in-action
+        app: find-recipes-app
         api_key:
           secure: CmuVKQ1pFfHgnJjzFKAFA05C6EDK/VMcDGqjqjHhK5DbvsjwVqHY2/WHnizOfWCMAtJjfxlLh7cMHRaoVVV3R0q6qyVd0GCl9V7EfxzSGQbrjaGzsU3V2MxZsquqFr6GaOahI8U2oYaFlCg55UpQZsFN0Jc8z08GE/I43X1XriwIeG0lAWVTMUOQibF7aSnPuZoVwzZhdV6wP2chfWUv3zw3JeDr1oXcBtke7OBC2imu8BeQ/FtM9UqCpJeKHNUtdqdD6wBYVQGk2axWx9COX5b5wdbQ9+0lkF8iT4nx/QhQKjPWjwjp9fLTwq8E3UK4ZsOWd4J1+GhVYtztJ1lVqcjeH1hZePf0ZA9ILyczevCgIEqGRnUHBYHfhLeavCb/h1AbZ/FZ405EL7bVS0QPCjNzltQtnsPcdFfkJbSneI4g2c873m+VVh0Byy+MpCbdzM7xfcWrd4+LfBQVHq+J5mi3ar+H9PJK/XQmEQp6rSsVvaD7bCSvnKakt813aEaPbtAkazsWtRgGu6/oINSaTMqjS+dj9YIPICfrbB29crvhwn0twUkwGEc1YAQ1YsqIL5Vei9g7N/Ue8Vk8JUJWGHpYZx/R8ZWpXJ7FtjQTdfhBAER94Usetr9bzOaG8pqsHVMdAN7BI1iUc2+yVibQ/BzHRANdF6A1uLpxp//cVYk=
         provider: heroku
