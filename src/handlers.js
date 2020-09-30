@@ -1,5 +1,5 @@
 const axios = require('axios');
-const {getClientId, getClientSecret, getReactHost} = require('../config');
+const {getClientId, getClientSecret} = require('../config');
 
 const generateUserInfoConfig = function(accessToken) {
   return {
@@ -14,7 +14,7 @@ const generateUserInfoConfig = function(accessToken) {
 const generateAccessTokenConfig = function(code) {
   return {
     method: 'post',
-    url: `https://github.com/login/oauth/access_token?client_id=1d0dd614acec505180d7&client_secret=bc54228f715cc9b4691f8f518c77e8d071657ffb&code=${code}`,
+    url: `https://github.com/login/oauth/access_token?client_id=${getClientId()}&client_secret=${getClientSecret()}&code=${code}`,
     headers: {
       accept: 'application/json'
     }
@@ -30,16 +30,14 @@ const processGithubOauth = function(req, res) {
       const {name, avatar_url, id} = data;
       req.app.locals.userDetails = data;
       res.cookie('sId', sessions.createSession(data.id));
-      db.addUser({name, url: avatar_url, id}).then(
-        res.redirect('http://localhost:3000/')
-      );
+      db.addUser({name, url: avatar_url, id}).then(res.redirect('/'));
     });
   });
 };
 
 const githubLogin = (req, res) => {
   res.redirect(
-    `https://github.com/login/oauth/authorize?client_id=1d0dd614acec505180d7`
+    `https://github.com/login/oauth/authorize?client_id=${getClientId()}`
   );
 };
 
