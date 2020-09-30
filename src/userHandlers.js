@@ -31,9 +31,13 @@ const filterLunch = function(req, res) {
   res.json(filteredRecipes);
 };
 
-const isLoggedIn = function (req, res) {
-  
-}
+const logout = function(req, res) {
+  const {sessions} = req.app.locals;
+  const {sId} = req.cookies;
+  sessions[sId] = '';
+  res.cookie('sId', '');
+  res.redirect('/');
+};
 
 const getNewRecipe = (details, id, by, file) => {
   const today = new Date();
@@ -60,5 +64,6 @@ module.exports = {
   filterJuice,
   filterLunch,
   filterBreakfast,
-  getNewRecipe
+  getNewRecipe,
+  logout
 };

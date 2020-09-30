@@ -9,7 +9,8 @@ const {
   filterJuice,
   filterBreakfast,
   filterLunch,
-  getNewRecipe
+  getNewRecipe,
+  logout
 } = require('./userHandlers');
 
 const app = express();
@@ -24,7 +25,7 @@ app.use(fileUpload());
 app.use(express.json());
 
 app.use(express.static('./build'));
-  
+
 app.use('/api/assets', express.static('public/assets'));
 
 app.get('/api/signIn', githubLogin);
@@ -98,8 +99,6 @@ app.get('/api/others', (req, res) => {
   });
 });
 
-app.post('/api/toggleFollowStatus', (req, res) => {
-  res.end();
-});
+app.post('/api/logout', logout);
 
 module.exports = {app};
