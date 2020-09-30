@@ -29,6 +29,10 @@ app.get('/api/signIn', githubLogin);
 
 app.get('/api/verify', processGithubOauth);
 
+app.get('/api/getUser', (req, res) => {
+  res.json(req.app.locals.userDetails);
+});
+
 app.get('/api/isLoggedIn', (req, res) => {
   const {sessions} = req.app.locals;
   const {sId} = req.cookies;

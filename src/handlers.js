@@ -1,4 +1,5 @@
 const axios = require('axios');
+const {getClientId, getClientSecret, getReactHost} = require('../config');
 
 const generateUserInfoConfig = function(accessToken) {
   return {
@@ -26,11 +27,11 @@ const processGithubOauth = function(req, res) {
   axios(generateAccessTokenConfig(code)).then(({data}) => {
     const accessToken = data['access_token'];
     axios(generateUserInfoConfig(accessToken)).then(({data}) => {
-      req.app.locals.userDetails = data;
       const {name, avatar_url, id} = data;
+      req.app.locals.userDetails = data;
       res.cookie('sId', sessions.createSession(data.id));
       db.addUser({name, url: avatar_url, id}).then(
-        res.redirect('http://localhost:3000')
+        res.redirect('http://localhost:3000/')
       );
     });
   });
