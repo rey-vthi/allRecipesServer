@@ -1,3 +1,5 @@
+const fs = require('fs');
+
 const restoreRecipes = function(req, res, next) {
   req.app.locals.db
     .getAllRecipes()

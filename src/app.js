@@ -1,4 +1,3 @@
-const fs = require('fs');
 const express = require('express');
 const fileUpload = require('express-fileupload');
 const cookieParser = require('cookie-parser');
