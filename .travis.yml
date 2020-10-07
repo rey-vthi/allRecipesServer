@@ -2,13 +2,12 @@ language: node_js
 node_js: lts/*
 jobs:
   include:
-  - stage: DEPLOY
-    script: "./createBuild.sh"
-    deploy:
-      app: find-recipes-app
-      api_key:
-        secure: oQCmLZHYP2JtjO1v1SDjkneNn5QH7AWXq5LyOPML1q3DwFbKAfC8l16tGhZTEouQL4xvexoZ6y4nXujd730XXyt9qkqFg/COhtwh5hrxCXb4Ir5WfaWrgxo0k6iFGNPy6SLVYc8BjF3A+BHaFe4aagK0fv96NLbWebc85H67DndG83Z2nIoNoamDA8XqQaDUK0N5MEzvXFlRGMTrT+nZv72mtLiLIu5AwW5qpSwWX1SOfoVk/7K4vtQazRc2tKyvgPRl92OxthcC4+AhtZPsK67slj+j0Y4H6Pa0qzhjlXQtw7AFSaJW+JfPN0ulkBBcfcNk9BDCkp7nQ6KEW8i1l3C04HwlrR0kpkgAxj4mdOasH6axZmArpzXxJKH4BBVDozzPvmg7e+Bl6J8Zk492OnkktYfUghJuIOi/pnOxjK98gKA2R17qTK1Xp2oHK5ye+O646lL4Qr3MjxuBMh3KYpZCSrJHSZE8GdBslZXv/ZYQoOSgjwt1FU8ZSfb8waJtm0BH0iwHq4VEacf6ykK7nttvT+IcPbxLxf9iM8TLgF0ARVC+KwTxJW+8/cYceURymNtZgubBrCRZNN8UnrwAH0Bh+/XfkCVyFmJtgZ8Vv7UEMAZcvC3wYhUlQY5UnN+RbLg9tkXS02GprmgYjJEn22WFboAfHOLdjSDx0jtMd2M=
-      provider: heroku
-      run: restart
-      skip_cleanup: true
-
+    - stage: DEPLOY
+      script: './createBuild.sh'
+      deploy:
+        app: find-recipes-app
+        api_key:
+          secure: RmJvHC3SJFQgzU4uvD6J7bntGB1Jt6k/ZnJFKy2ZWdC/AWbcpG1M06UEZHmLdONcS9HJdwxj7z6R+q2Nfd8TwY3xfYcEDFQ5jFhn23r7/zMCMF2ZdToQUg9lL9d4LnnHpdiqfXlr5ULlnOARL1FhXtpOhgPtthbkDeQcsDPo3cGsa0tmVPkf7mzTIduDHgB3VgqmKKVzvVihVDXTBaeEXw9UmxUP1dThxSmmdHN/Rrb//EPZs6m3Y9XAkYYw+Tc2JfoNlU4K8Tk2TZxjCORkQcdSSs8O5OSmQkb4ir4b7M1nHRQwYaAhhkrjhw1QcGEA60BwX16VMobQJqOqVlB0sPwDuAFxWWjlyY5NPE62s57vWN7in2DevKfLOTVJ/Oxbw8UFRVilKMOIDP7BZIExIOsCvQmVmRiN477giRdrsd97C/oo6oN94U9dGkUemE5ilVeGo5zH77WzJ7IjdzQbFq9AdcK+ZzlXFGdBXHktt3F+7RC4eTUAwASr+LHdZzV0xSuovKdjvh8Y8ahBcy1iggjT2y7T4ltqE0AVWnF4Ag2lDjpni69tGlKXwDwCIpW8v89a0CUBjRctF+oZQ+2EQ1VhBNFXy5olyXo4jVy5uFQbKyv04OqAD5AzUcK7zgMo99mBuEfA9RlxsEHFXTeCtPIL3uwuN/+EtvxO18ZJyLI=
+        provider: heroku
+        run: restart
+        skip_cleanup: true
