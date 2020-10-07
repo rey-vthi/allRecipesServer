@@ -11,6 +11,4 @@ jobs:
       provider: heroku
       run: restart
       skip_cleanup: true
-deploy:
-  api_key:
-    secure: 
+
